@@ -1,0 +1,49 @@
+name: Hello World
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hello
+        run: echo Hello
+
+  world:
+    needs: hello
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: World
+        run: echo World
+
+  list:
+    needs: world
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: List things
+        run: ls -la
+
+  test:
+    needs: world
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Verify Rainbow Exists
+        run: test -f ./rainbow-fruit.md
+
+  deploy:
+    needs: test
+    environment: Production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fake the deploy
+        run: echo Deployed!
